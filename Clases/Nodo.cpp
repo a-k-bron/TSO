@@ -2,22 +2,23 @@
 // Created by Everardo Ramirez on 30/03/2017.
 //
 
+#include <sstream>
 #include "Nodo.h"
 
 
-Nodo::Nodo(char tipo, int posicion, int uam) {
-    this->tipo=tipo;
-    this->posicion=posicion;
-    this->uam =  uam;
-    enlace= nullptr;
+Nodo::Nodo(string tipo, int posicion, int uam) {
+    this->tipo = tipo;
+    this->posicion = posicion;
+    this->uam = uam;
+    enlace = nullptr;
 
 }
 
-Nodo::Nodo(char tipo, int posicion, int uam, Nodo *n) {
-    this->tipo=tipo;
-    this->posicion=posicion;
-    this->uam =  uam;
-    this->enlace=n;
+Nodo::Nodo(string tipo, int posicion, int uam, Nodo *n) {
+    this->tipo = tipo;
+    this->posicion = posicion;
+    this->uam = uam;
+    this->enlace = n;
 
 }
 
@@ -37,11 +38,11 @@ void Nodo::setPosicion(int posicion) {
     Nodo::posicion = posicion;
 }
 
-char Nodo::getTipo() const {
+string Nodo::getTipo() const {
     return tipo;
 }
 
-void Nodo::setTipo(char tipo) {
+void Nodo::setTipo(string tipo) {
     Nodo::tipo = tipo;
 }
 
@@ -51,6 +52,18 @@ Nodo *Nodo::getEnlace() const {
 
 void Nodo::setEnlace(Nodo *enlace) {
     Nodo::enlace = enlace;
+}
+
+string Nodo::toString() {
+    stringstream *convertir = new stringstream();
+    *convertir << this->getPosicion();
+    string cadena = "tipo " + getTipo() + " posicion " + convertir->str();
+    delete convertir;
+    convertir = new stringstream();
+    *convertir << this->getUam();
+    cadena += " uam " + convertir->str();
+    delete convertir;
+    return cadena;
 }
 
 

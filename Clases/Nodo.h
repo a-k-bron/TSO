@@ -5,12 +5,15 @@
 #ifndef ADMINISTRACION_DE_MEMORIA_NODO_H
 #define ADMINISTRACION_DE_MEMORIA_NODO_H
 
+#include <string>
 
+
+using namespace std;
 class Nodo {
 public:
-    Nodo(char tipo, int posicion, int uam);
+    Nodo(string tipo, int posicion, int uam);
 
-    Nodo(char tipo, int posicion, int uam, Nodo *n);
+    Nodo(string tipo, int posicion, int uam, Nodo *n);
 
     int getUam() const;
 
@@ -20,18 +23,20 @@ public:
 
     void setPosicion(int posicion);
 
-    char getTipo() const;
+    string getTipo() const;
 
-    void setTipo(char tipo);
+    void setTipo(string tipo);
 
     Nodo *getEnlace() const;
 
     void setEnlace(Nodo *enlace);
 
+    string toString();
+
 
 protected:
     int uam, posicion;
-    char tipo;
+    string tipo;
     Nodo *enlace;
 };
 

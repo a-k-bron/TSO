@@ -13,6 +13,10 @@ protected:
     Nodo* primero;
 public:
     Lista();
+    void crearLista();
+    Nodo * ultimo();
+    void insertarUltimo(string tipo, int posicion, int uam );
+    void recorreLista();
 
 
 
