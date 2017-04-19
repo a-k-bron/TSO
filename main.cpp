@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Clases/Lista.h"
+#include "Clases/SuperLista.h"
 
 using namespace std;
 /*proyecto de taller de sistemas operativos
@@ -9,10 +10,16 @@ using namespace std;
  * Romero Vazquez Jorge Alberto (Lo llevo en mi corazon)
  * */
 int main() {
-    Lista *l = new Lista();
-    cout << "inserta elementos a la lista" << endl;
-    l->crearLista();
+    int tamanoMemoria,tamanoUAM;
+
+    cout<<"tamaño de la memoria"<<endl;
+    cin>>tamanoMemoria;
+    cout<<"tamaño de la uam";
+    cin>>tamanoUAM;
+    SuperLista *sl = new SuperLista(tamanoMemoria,tamanoUAM);
+
+
     cout<<"la lista"<<endl;
-    l->recorreLista();
+    sl->l->recorreLista();
     return 0;
 }

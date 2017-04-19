@@ -9,6 +9,7 @@ using namespace std;
 
 Lista::Lista() {
     primero = nullptr;
+    contadorID=0;
 }
 
 void Lista::crearLista() {
@@ -17,8 +18,9 @@ void Lista::crearLista() {
     while (numero != -1) {
         cout << "uam" << endl;
         cin >> numero;
-        this->insertarUltimo("p", pos, numero);
-        pos+=numero;
+        this->insertarUltimo("p",pos,numero,contadorID,numero,0);
+        pos += numero;
+        contadorID++;
     }
 }
 
@@ -31,12 +33,12 @@ Nodo *Lista::ultimo() {
     return p;
 }
 
-void Lista::insertarUltimo(string tipo, int posicion, int uam) {
+void Lista::insertarUltimo(string tipo, int posicion, int uam, int id,int tamano,int residuo) {
     if (primero == nullptr) {
-        primero = new Nodo(tipo, posicion, uam);
+        primero = new Nodo(uam,posicion,id,tamano,residuo,tipo);
     } else {
         Nodo *ultimo = this->ultimo();
-        ultimo->setEnlace(new Nodo(tipo, posicion, uam));
+        ultimo->setEnlace(new Nodo(uam,posicion,id,tamano,residuo,tipo));
     }
 
 }
@@ -44,12 +46,34 @@ void Lista::insertarUltimo(string tipo, int posicion, int uam) {
 void Lista::recorreLista() {
     Nodo *p = primero;
 
-    do{
-        cout<<p->toString()<<endl;
-        p=p->getEnlace();
-    }while(p->getEnlace()!= nullptr);
+    do {
+        cout << p->toString() << endl;
+        p = p->getEnlace();
+    } while (p!= nullptr);
 
 
 }
+
+void Lista::insertarInicio(string tipo, int posicion, int uam, int id,int tamano,int residuo) {
+    Nodo *nuevo;
+    nuevo =new Nodo(uam,posicion,id,tamano,residuo,tipo);
+    nuevo->setEnlace(primero);
+    primero = nuevo;
+
+}
+
+void Lista::insertarMedio(string tipo, int posicion, int uam, int id,int tamano,int residuo, Nodo *anterior) {
+
+}
+
+int Lista::getContadorID() const {
+    return contadorID;
+}
+
+void Lista::setContadorID(int contadorID) {
+    Lista::contadorID = contadorID;
+}
+
+
 
 

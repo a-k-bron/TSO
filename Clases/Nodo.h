@@ -11,9 +11,11 @@
 using namespace std;
 class Nodo {
 public:
-    Nodo(string tipo, int posicion, int uam);
+    string toString();
 
-    Nodo(string tipo, int posicion, int uam, Nodo *n);
+    Nodo(int uam, int posicion, int id, int tamano, int residuo, const string &tipo, Nodo *enlace);
+
+    Nodo(int uam, int posicion, int id, int tamano, int residuo, const string &tipo);
 
     int getUam() const;
 
@@ -23,19 +25,29 @@ public:
 
     void setPosicion(int posicion);
 
-    string getTipo() const;
+    int getId() const;
 
-    void setTipo(string tipo);
+    void setId(int id);
+
+    int getTamano() const;
+
+    void setTamano(int tamano);
+
+    int getResiduo() const;
+
+    void setResiduo(int residuo);
+
+    const string &getTipo() const;
+
+    void setTipo(const string &tipo);
 
     Nodo *getEnlace() const;
 
     void setEnlace(Nodo *enlace);
 
-    string toString();
-
 
 protected:
-    int uam, posicion;
+    int uam, posicion, id, tamano, residuo;
     string tipo;
     Nodo *enlace;
 };
