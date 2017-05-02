@@ -11,14 +11,13 @@
 class Lista {
 protected:
     Nodo *primero;
-    int contadorID;
+public:
+    Nodo *getPrimero() const;
+
 public:
 
 
     Lista();
-
-    void crearLista();
-
     Nodo *ultimo();
 
     void recorreLista();
@@ -30,9 +29,6 @@ public:
 
     void insertarMedio(string tipo, int posicion, int uam, int id, int tamano, int residuo, Nodo *anterior);
 
-    int getContadorID() const;
-
-    void setContadorID(int contadorID);
 };
 
 

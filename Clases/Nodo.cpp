@@ -3,23 +3,15 @@
 //
 
 #include <sstream>
+#include <iostream>
 #include "Nodo.h"
 
 
-string Nodo::toString() {
-    stringstream *convertir = new stringstream();
-    *convertir << this->getPosicion();
-    string cadena = "tipo " + getTipo() + " posicion " + convertir->str();
-    delete convertir;
-    convertir = new stringstream();
-    *convertir << this->getUam();
-    cadena += " uam " + convertir->str();
-    delete convertir;
-    convertir = new stringstream();
-    *convertir << this->getId();
-    cadena += " id " + convertir->str();
-    delete convertir;
-    return cadena;
+void Nodo::toString() {
+    getPosicion();
+    cout<< "tipo " << getTipo() <<" posicion " << getPosicion()<<" uam "<< getUam()<<" Id "<< getId()<<" tamano "
+        <<getTamano()<<" residuo "<<getResiduo()<<endl;
+
 }
 
 Nodo::Nodo(int uam, int posicion, int id, int tamano, int residuo, const string &tipo, Nodo *enlace) : uam(uam),

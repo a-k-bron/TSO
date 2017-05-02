@@ -11,7 +11,7 @@
 using namespace std;
 class Nodo {
 public:
-    string toString();
+    void toString();
 
     Nodo(int uam, int posicion, int id, int tamano, int residuo, const string &tipo, Nodo *enlace);
 

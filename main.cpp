@@ -17,6 +17,7 @@ int main() {
     cout<<"tamaño de la uam";
     cin>>tamanoUAM;
     SuperLista *sl = new SuperLista(tamanoMemoria,tamanoUAM);
+    sl->crearLista();
 
 
     cout<<"la lista"<<endl;

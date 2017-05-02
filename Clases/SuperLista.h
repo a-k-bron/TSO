@@ -9,7 +9,11 @@
 #include "Lista.h"
 
 class SuperLista {
-    int tamanoMemoria, tamanoUAM;
+    int tamanoMemoria, tamanoUAM,contadorID;
+public:
+    int getContadorID() const;
+
+    void setContadorID(int contadorID);
 
 public:
     SuperLista(int tamanoMemoria, int tamanoUAM);
@@ -23,6 +27,8 @@ public:
     int getTamanoUAM() const;
 
     void setTamanoUAM(int tamanoUAM);
+
+    void crearLista();
 };
 
 
