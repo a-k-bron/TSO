@@ -12,7 +12,6 @@ Lista::Lista() {
 }
 
 
-
 Nodo *Lista::ultimo() {
     Nodo *p = primero;
     if (p == nullptr)throw "Error, lista vacia";
@@ -36,6 +35,7 @@ void Lista::recorreLista() {
     Nodo *p = primero;
 
     do {
+
         p->toString();
         p = p->getEnlace();
     } while (p != nullptr);
@@ -60,6 +60,67 @@ void Lista::insertarMedio(string tipo, int posicion, int uam, int id, int tamano
 
 Nodo *Lista::getPrimero() const {
     return primero;
+}
+
+Nodo *Lista::buscarPorID(int buscado) {
+    Nodo *aux = getPrimero();
+    while (aux != nullptr) {
+        if (aux->getId() == buscado) {
+            return aux;
+        }
+        aux = aux->getEnlace();
+    }
+    return aux;
+}
+
+void Lista::eliminar(string tipo) {
+    Nodo *actual, *anterior;
+    bool encontrado;
+    actual = getPrimero();
+    anterior = nullptr;
+    encontrado = false;
+    while ((actual != nullptr) && !encontrado) {
+        encontrado = (actual->getTipo() == tipo);
+        if (!encontrado) {
+            anterior = actual;
+            actual = actual->getEnlace();
+        }
+    }
+
+    if (actual != nullptr) {
+        if (actual == primero) {
+            primero = actual->getEnlace();
+        } else {
+            anterior->setEnlace(actual->getEnlace());
+        }
+        delete actual;
+    }
+
+}
+
+void Lista::eliminar(int id) {
+    Nodo *actual, *anterior;
+    bool encontrado;
+    actual = getPrimero();
+    anterior = nullptr;
+    encontrado = false;
+    while ((actual != nullptr) && !encontrado) {
+        encontrado = (actual->getId() == id);
+        if (!encontrado) {
+            anterior = actual;
+            actual = actual->getEnlace();
+        }
+    }
+
+    if (actual != nullptr) {
+        if (actual == primero) {
+            primero = actual->getEnlace();
+        } else {
+            anterior->setEnlace(actual->getEnlace());
+        }
+        delete actual;
+    }
+
 }
 
 

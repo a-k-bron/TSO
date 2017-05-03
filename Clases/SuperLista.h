@@ -9,16 +9,18 @@
 #include "Lista.h"
 
 class SuperLista {
-    int tamanoMemoria, tamanoUAM,contadorID;
+private:
+    int tamanoMemoria, tamanoUAM, contadorID;
 public:
     int getContadorID() const;
 
     void setContadorID(int contadorID);
 
-public:
+    void aumentarContadorID();
+
     SuperLista(int tamanoMemoria, int tamanoUAM);
 
-    Lista* l;
+    Lista *l;
 
     int getTamanoMemoria() const;
 
@@ -29,6 +31,13 @@ public:
     void setTamanoUAM(int tamanoUAM);
 
     void crearLista();
+
+    void buscar();
+
+    void terminarProceso(int id);
+
+    void terminarProceso();
+
 };
 
 

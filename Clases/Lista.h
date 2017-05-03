@@ -21,7 +21,9 @@ public:
     Nodo *ultimo();
 
     void recorreLista();
-
+    Nodo *buscarPorID(int buscado);
+    void eliminar(string tipo);
+    void eliminar(int id);
 
     void insertarUltimo(string tipo, int posicion, int uam, int id, int tamano, int residuo);
 

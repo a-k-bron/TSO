@@ -10,7 +10,7 @@ using namespace std;
  * Romero Vazquez Jorge Alberto (Lo llevo en mi corazon)
  * */
 int main() {
-    int tamanoMemoria,tamanoUAM;
+    int tamanoMemoria,tamanoUAM, procesoT;
 
     cout<<"tamaño de la memoria"<<endl;
     cin>>tamanoMemoria;
@@ -22,5 +22,14 @@ int main() {
 
     cout<<"la lista"<<endl;
     sl->l->recorreLista();
+
+    do{
+        cout<<"proceso a terminar";
+        cin>>procesoT;
+        sl->terminarProceso(procesoT);
+        sl->l->recorreLista();
+    }while (procesoT!=-1);
+
+
     return 0;
 }
