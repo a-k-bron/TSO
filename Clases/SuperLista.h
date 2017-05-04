@@ -18,6 +18,10 @@ public:
 
     void aumentarContadorID();
 
+    bool lleno();
+
+    int getTamanoMemoriaUAM();
+
     SuperLista(int tamanoMemoria, int tamanoUAM);
 
     Lista *l;
@@ -31,6 +35,8 @@ public:
     void setTamanoUAM(int tamanoUAM);
 
     void crearLista();
+
+    Nodo * getMayorHueco();
 
     void buscar();
 

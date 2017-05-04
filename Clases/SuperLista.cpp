@@ -36,7 +36,7 @@ void SuperLista::crearLista() {
     Nodo *p;
     cout << "tamano del proceso" << endl;
     cin >> tamano;
-    while (tamano != -1) {
+    while (tamano != -1 && !lleno()) {
 
         calculoUAM = tamano / getTamanoUAM();
         if (tamano % getTamanoUAM() > 0) {
@@ -45,10 +45,12 @@ void SuperLista::crearLista() {
         } else {
             residuo = 0;
         }
-        l->insertarInicio("p", 0, calculoUAM, contadorID, tamano, residuo);//tipo,posicion,uam,id,tamaño,residuo
-        l->ultimo()->setUam(l->ultimo()->getUam() - calculoUAM);
-        l->ultimo()->setTamano(l->ultimo()->getTamano() - (calculoUAM * getTamanoUAM()));
-        contadorID++;
+        if (getMayorHueco()->getUam() > calculoUAM) {
+            l->insertarInicio("p", 0, calculoUAM, contadorID, tamano, residuo);//tipo,posicion,uam,id,tamaño,residuo
+            l->ultimo()->setUam(l->ultimo()->getUam() - calculoUAM);
+            l->ultimo()->setTamano(l->ultimo()->getTamano() - (calculoUAM * getTamanoUAM()));
+            contadorID++;
+        } else { cout << "falta espacio" << endl; }
         cin >> tamano;
     }
 
@@ -75,8 +77,8 @@ void SuperLista::terminarProceso(int id) {
         l->buscarPorID(id)->setTipo("h");//cambio el tipo a h
         l->buscarPorID(id)->setId(-1);
         terminarProceso();
-    } else{
-        cout<<"el proceso "<<id<<" no existe"<<endl;
+    } else {
+        cout << "el proceso " << id << " no existe" << endl;
     }
 
 
@@ -108,4 +110,43 @@ void SuperLista::terminarProceso() {
 
 void SuperLista::aumentarContadorID() {
     contadorID++;
+}
+
+bool SuperLista::lleno() {
+    int contador = 0;
+    Nodo *p = l->getPrimero();
+
+    while (p != nullptr) {
+        if (p->getTipo() == "p") {
+            contador += p->getUam();
+        }
+        p = p->getEnlace();
+    }
+    if (getTamanoMemoriaUAM() == contador) { return true; }
+    else { return false; }
+
+}
+
+int SuperLista::getTamanoMemoriaUAM() {
+    return getTamanoMemoria() / getTamanoUAM();
+}
+
+Nodo *SuperLista::getMayorHueco() {
+    Nodo *p = l->getPrimero(), *mayorTemporal;
+    while (p != nullptr) {
+        if (p->getTipo() == "h") {
+            mayorTemporal = p;
+            break;
+        }
+        p = p->getEnlace();
+    }
+    p = l->getPrimero();
+    while (p != nullptr) {
+        if (p->getUam() > mayorTemporal->getUam()) {
+            mayorTemporal = p;
+        }
+        p = p->getEnlace();
+    }
+
+    return mayorTemporal;
 }
