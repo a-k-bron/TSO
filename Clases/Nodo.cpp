@@ -9,8 +9,9 @@
 
 void Nodo::toString() {
     getPosicion();
-    cout<< "tipo " << getTipo() <<" posicion " << getPosicion()<<" uam "<< getUam()<<" Id "<< getId()<<" tamano "
-        <<getTamano()<<" residuo "<<getResiduo()<<endl;
+    cout << "tipo " << getTipo() << " Inicio " << getPosicion() << " final " << getPosicion() + getUam()-1 << " uams "
+         << getUam() << " Id " << getId() << " tamano "
+         << getTamano() << " residuo " << getResiduo() << endl;
 
 }
 

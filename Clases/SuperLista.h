@@ -44,6 +44,10 @@ public:
 
     void terminarProceso();
 
+    void mejorAjuste(int tamano);
+
+    void actualizarPosiciones();
+
 };
 
 

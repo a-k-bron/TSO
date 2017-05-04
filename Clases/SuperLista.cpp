@@ -31,7 +31,7 @@ SuperLista::SuperLista(int tamanoMemoria, int tamanoUAM) : tamanoMemoria(tamanoM
 
 void SuperLista::crearLista() {
 
-    int tamano = 0, acumulado = 0;
+    int tamano = 0;
     int calculoUAM, residuo;
     Nodo *p;
     cout << "tamano del proceso" << endl;
@@ -46,7 +46,15 @@ void SuperLista::crearLista() {
             residuo = 0;
         }
         if (getMayorHueco()->getUam() > calculoUAM) {
+            Nodo *p;
+            int acumulado = 0;
             l->insertarInicio("p", 0, calculoUAM, contadorID, tamano, residuo);//tipo,posicion,uam,id,tamaño,residuo
+            p = l->getPrimero();
+            while (p != nullptr) {
+                p->setPosicion(acumulado);
+                acumulado += p->getUam();
+                p = p->getEnlace();
+            }
             l->ultimo()->setUam(l->ultimo()->getUam() - calculoUAM);
             l->ultimo()->setTamano(l->ultimo()->getTamano() - (calculoUAM * getTamanoUAM()));
             contadorID++;
@@ -73,10 +81,18 @@ void SuperLista::buscar() {
 }
 
 void SuperLista::terminarProceso(int id) {
+    Nodo *p = l->getPrimero();
+    int acumulado = 0;
     if (l->buscarPorID(id)) {
         l->buscarPorID(id)->setTipo("h");//cambio el tipo a h
         l->buscarPorID(id)->setId(-1);
         terminarProceso();
+
+        while (p != nullptr) {
+            p->setPosicion(acumulado);
+            acumulado += p->getUam();
+            p = p->getEnlace();
+        }
     } else {
         cout << "el proceso " << id << " no existe" << endl;
     }
@@ -149,4 +165,95 @@ Nodo *SuperLista::getMayorHueco() {
     }
 
     return mayorTemporal;
+}
+
+void SuperLista::mejorAjuste(int tamano) {
+
+
+    Nodo *p = l->getPrimero(), *masJusto, *anterior;
+    int calculoUAM, residuo, acumulado;
+    calculoUAM = tamano / getTamanoUAM();
+    if (tamano % getTamanoUAM() > 0) {
+        calculoUAM += 1;
+        residuo = getTamanoUAM() - (tamano % getTamanoUAM());
+    } else {
+        residuo = 0;
+    }
+
+    if (lleno() || getMayorHueco()->getUam() < calculoUAM) {
+        cout << "sin espacio suficiente" << endl;
+        return;
+    }
+
+    while (p != nullptr) {//encontrar el primer hueco
+        if (p->getTipo() == "h" && p->getUam() >= calculoUAM) {
+            masJusto = p;
+            break;
+        }
+        p = p->getEnlace();
+    }
+    p = l->getPrimero();
+    while (p != nullptr) {
+        if (p->getTipo() == "h" && p->getUam() >= calculoUAM && p->getUam() < masJusto->getUam()) {//ajustar
+            masJusto = p;
+        }
+        p = p->getEnlace();
+    }
+    if (masJusto == l->getPrimero()) {//si el mas justo es el primero
+        l->insertarInicio("p", 0, calculoUAM, getContadorID(), tamano, residuo);
+        aumentarContadorID();
+        masJusto->setTamano(masJusto->getTamano() - tamano);
+        calculoUAM = masJusto->getTamano() / getTamanoUAM();
+        if (masJusto->getTamano() % getTamanoUAM() > 0) {
+            calculoUAM += 1;
+            residuo = getTamanoUAM() - (masJusto->getTamano() % getTamanoUAM());
+        } else {
+            residuo = 0;
+        }
+        masJusto->setUam(calculoUAM);
+        masJusto->setResiduo(residuo);
+        if (masJusto->getUam() == 0) {
+            masJusto->setTipo("eliminar");
+            l->eliminar("eliminar");
+        }
+    } else {
+        p = l->getPrimero();
+        while (p->getEnlace() != masJusto) {
+            p = p->getEnlace();
+        }
+
+        l->insertarMedio("p", 0, calculoUAM, getContadorID(), tamano, residuo, p);
+        aumentarContadorID();
+        masJusto->setTamano(masJusto->getTamano() - tamano);
+        calculoUAM = masJusto->getTamano() / getTamanoUAM();
+        if (masJusto->getTamano() % getTamanoUAM() > 0) {
+            calculoUAM += 1;
+            residuo = getTamanoUAM() - (masJusto->getTamano() % getTamanoUAM());
+        } else {
+            residuo = 0;
+        }
+        masJusto->setUam(calculoUAM);
+        masJusto->setResiduo(residuo);
+        if (masJusto->getUam() == 0) {
+            masJusto->setTipo("eliminar");
+            l->eliminar("eliminar");
+        }
+
+    }
+    //l->insertarMedio("p", 0, calculoUAM, getContadorID(), tamano, residuo); }
+    actualizarPosiciones();
+
+
+}
+
+void SuperLista::actualizarPosiciones() {
+    Nodo *p;
+    int acumulado = 0;
+    p = l->getPrimero();
+    while (p != nullptr) {
+        p->setPosicion(acumulado);
+        acumulado += p->getUam();
+        p = p->getEnlace();
+    }
+
 }

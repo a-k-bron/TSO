@@ -30,6 +30,14 @@ int main() {
         sl->l->recorreLista();
     }while (procesoT!=-1);
 
+    do{
+        cout<<"tamano proceso";
+        cin>>procesoT;
+        sl->mejorAjuste(procesoT);
+        sl->l->recorreLista();
+    }while (procesoT!=-1);
+
+
 
     return 0;
 }

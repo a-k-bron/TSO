@@ -55,6 +55,9 @@ void Lista::insertarInicio(string tipo, int posicion, int uam, int id, int taman
 }
 
 void Lista::insertarMedio(string tipo, int posicion, int uam, int id, int tamano, int residuo, Nodo *anterior) {
+    Nodo *nuevo = new Nodo(uam, posicion, id, tamano, residuo, tipo);
+    nuevo->setEnlace(anterior->getEnlace());
+    anterior->setEnlace(nuevo);
 
 }
 
