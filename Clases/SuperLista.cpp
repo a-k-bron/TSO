@@ -258,8 +258,9 @@ void SuperLista::actualizarPosiciones() {
 
 void SuperLista::siguienteAjuste(int tamano) {
     int calculoUAM, residuo;
-    Nodo* p;
-    p=l->getPrimero();
+    Nodo *p;
+    Nodo *aux;
+
     calculoUAM = tamano / getTamanoUAM();
     if (tamano % getTamanoUAM() > 0) {
         calculoUAM += 1;
@@ -274,12 +275,62 @@ void SuperLista::siguienteAjuste(int tamano) {
     }
 
     if (testigoUltimo == nullptr) {
-        while(p!= nullptr){
+        p = l->getPrimero();
+        while (p != nullptr) {
+            if (p->getTipo() == "h" && p->getUam() >= calculoUAM) {
+                break;
+            } else {
+                p = p->getEnlace();
+            }
+        }
+
+    } else {
+        bool segundaVuelta=false;
+        p=testigoUltimo;
+        while(p!= nullptr or !segundaVuelta){
+            if(p== nullptr){
+                p=l->getPrimero();
+                segundaVuelta=true;
+            }
+            if (p->getTipo() == "h" && p->getUam() >= calculoUAM) {
+                break;
+            } else {
+                p = p->getEnlace();
+            }
 
         }
-    } else {
+
+
 
     }
+    if (p == l->getPrimero()) {
+        l->insertarInicio("p", 0, calculoUAM, getContadorID(), tamano, residuo);
+        aumentarContadorID();
+    } else {
+        aux = l->getPrimero();
 
+        while (aux->getEnlace() != p) {
+            aux = aux->getEnlace();
+        }
+        l->insertarMedio("p", 0, calculoUAM, getContadorID(), tamano, residuo, aux);
+        aumentarContadorID();
+        testigoUltimo = aux->getEnlace();
+    }
+    p->setTamano(p->getTamano() - tamano);
+    calculoUAM = p->getTamano() / getTamanoUAM();
+    if (p->getTamano() % getTamanoUAM() > 0) {
+        calculoUAM += 1;
+        residuo = getTamanoUAM() - (p->getTamano() % getTamanoUAM());
+    } else {
+        residuo = 0;
+    }
 
+    p->setUam(calculoUAM);
+    p->setResiduo(residuo);
+
+    if (p->getUam() == 0) {
+        p->setTipo("eliminar");
+        l->eliminar("eliminar");
+    }
+    actualizarPosiciones();
 }
