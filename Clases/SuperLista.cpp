@@ -168,10 +168,8 @@ Nodo *SuperLista::getMayorHueco() {
 }
 
 void SuperLista::mejorAjuste(int tamano) {
-
-
-    Nodo *p = l->getPrimero(), *masJusto, *anterior;
-    int calculoUAM, residuo, acumulado;
+    Nodo *p = l->getPrimero(), *masJusto;       // obtener el primer nodo de la lista
+    int calculoUAM, residuo;                    //
     calculoUAM = tamano / getTamanoUAM();
     if (tamano % getTamanoUAM() > 0) {
         calculoUAM += 1;
@@ -255,5 +253,33 @@ void SuperLista::actualizarPosiciones() {
         acumulado += p->getUam();
         p = p->getEnlace();
     }
+
+}
+
+void SuperLista::siguienteAjuste(int tamano) {
+    int calculoUAM, residuo;
+    Nodo* p;
+    p=l->getPrimero();
+    calculoUAM = tamano / getTamanoUAM();
+    if (tamano % getTamanoUAM() > 0) {
+        calculoUAM += 1;
+        residuo = getTamanoUAM() - (tamano % getTamanoUAM());
+    } else {
+        residuo = 0;
+    }
+
+    if (lleno() || getMayorHueco()->getUam() < calculoUAM) {
+        cout << "sin espacio suficiente" << endl;
+        return;
+    }
+
+    if (testigoUltimo == nullptr) {
+        while(p!= nullptr){
+
+        }
+    } else {
+
+    }
+
 
 }

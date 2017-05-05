@@ -11,6 +11,7 @@
 class SuperLista {
 private:
     int tamanoMemoria, tamanoUAM, contadorID;
+    Nodo* testigoUltimo= nullptr;
 public:
     int getContadorID() const;
 
@@ -45,6 +46,8 @@ public:
     void terminarProceso();
 
     void mejorAjuste(int tamano);
+
+    void siguienteAjuste(int  tamano);
 
     void actualizarPosiciones();
 
