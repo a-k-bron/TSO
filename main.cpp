@@ -33,7 +33,8 @@ int main() {
     do{
         cout<<"tamano proceso";
         cin>>procesoT;
-        sl->mejorAjuste(procesoT);
+        //sl->mejorAjuste(procesoT);
+        sl->siguienteAjuste(procesoT);
         sl->l->recorreLista();
     }while (procesoT!=-1);
 

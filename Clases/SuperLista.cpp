@@ -45,7 +45,7 @@ void SuperLista::crearLista() {
         } else {
             residuo = 0;
         }
-        if (getMayorHueco()->getUam() > calculoUAM) {
+        if (getMayorHueco()->getUam() >= calculoUAM) {
             Nodo *p;
             int acumulado = 0;
             l->insertarInicio("p", 0, calculoUAM, contadorID, tamano, residuo);//tipo,posicion,uam,id,tamaño,residuo
@@ -62,6 +62,10 @@ void SuperLista::crearLista() {
         cin >> tamano;
     }
 
+    if (l->ultimo()->getUam() == 0) {
+        l->ultimo()->setTipo("eliminar");
+        l->eliminar("eliminar");
+    }
 }
 
 int SuperLista::getContadorID() const {
@@ -269,7 +273,7 @@ void SuperLista::siguienteAjuste(int tamano) {
         residuo = 0;
     }
 
-    if (lleno() || getMayorHueco()->getUam() < calculoUAM) {
+    if (getMayorHueco()->getUam() < calculoUAM) {
         cout << "sin espacio suficiente" << endl;
         return;
     }
