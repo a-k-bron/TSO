@@ -49,6 +49,8 @@ public:
 
     void siguienteAjuste(int  tamano);
 
+    void PrimerAjuste (int tamano);
+
     void actualizarPosiciones();
 
 };
