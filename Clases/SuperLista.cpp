@@ -142,7 +142,7 @@ bool SuperLista::lleno() {
         }
         p = p->getEnlace();
     }
-    if (getTamanoMemoriaUAM() == contador) { return true; }
+    if (getTamanoMemoriaUAM() <= contador) { return true; }
     else { return false; }
 
 }
@@ -289,12 +289,12 @@ void SuperLista::siguienteAjuste(int tamano) {
         }
 
     } else {
-        bool segundaVuelta=false;
-        p=testigoUltimo;
-        while(p!= nullptr or !segundaVuelta){
-            if(p== nullptr){
-                p=l->getPrimero();
-                segundaVuelta=true;
+        bool segundaVuelta = false;
+        p = testigoUltimo;
+        while (p != nullptr or !segundaVuelta) {
+            if (p == nullptr) {
+                p = l->getPrimero();
+                segundaVuelta = true;
             }
             if (p->getTipo() == "h" && p->getUam() >= calculoUAM) {
                 break;
@@ -303,7 +303,6 @@ void SuperLista::siguienteAjuste(int tamano) {
             }
 
         }
-
 
 
     }
@@ -339,7 +338,7 @@ void SuperLista::siguienteAjuste(int tamano) {
     actualizarPosiciones();
 }
 
-void SuperLista::PrimerAjuste (int tamano){
+void SuperLista::PrimerAjuste(int tamano) {
     int calculoUAM, residuo;
     Nodo *p;
     Nodo *aux;
@@ -357,17 +356,16 @@ void SuperLista::PrimerAjuste (int tamano){
         return;
     }
 
-    if (testigoUltimo == nullptr) {
-        p = l->getPrimero();
-        while (p != nullptr) {
-            if (p->getTipo() == "h" && p->getUam() >= calculoUAM) {
-                break;
-            } else {
-                p = p->getEnlace();
-            }
-        }
 
+    p = l->getPrimero();
+    while (p != nullptr) {
+        if (p->getTipo() == "h" && p->getUam() >= calculoUAM) {
+            break;
+        } else {
+            p = p->getEnlace();
+        }
     }
+
 
     if (p == l->getPrimero()) {
         l->insertarInicio("p", 0, calculoUAM, getContadorID(), tamano, residuo);
@@ -380,7 +378,6 @@ void SuperLista::PrimerAjuste (int tamano){
         }
         l->insertarMedio("p", 0, calculoUAM, getContadorID(), tamano, residuo, aux);
         aumentarContadorID();
-        testigoUltimo = aux->getEnlace();
     }
     p->setTamano(p->getTamano() - tamano);
     calculoUAM = p->getTamano() / getTamanoUAM();

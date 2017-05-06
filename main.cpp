@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 #include "Clases/Lista.h"
 #include "Clases/SuperLista.h"
 
@@ -26,7 +27,7 @@ int main() {
     sl->l->recorreLista();
 
     do{
-         system("cls");
+         //system("cls");
          cout<<"Procesos creados de forma satisfactoria"<<endl;
          cout<<"Introduce la opcion deseada, presiona otro numero para salir"<<endl;
          cout<<"1.- Mostrar Lista"<<endl;
