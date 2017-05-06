@@ -51,6 +51,8 @@ public:
 
     void PrimerAjuste (int tamano);
 
+    void peorAjuste(int tamano);
+
     void actualizarPosiciones();
 
 };

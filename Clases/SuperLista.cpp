@@ -398,3 +398,67 @@ void SuperLista::PrimerAjuste(int tamano) {
     actualizarPosiciones();
 
 }
+
+void SuperLista::peorAjuste(int tamano) {
+
+    Nodo *p = l->getPrimero(), *menosJusto;       // obtener el primer nodo de la lista
+    int calculoUAM, residuo;                    //
+    calculoUAM = tamano / getTamanoUAM();
+    if (tamano % getTamanoUAM() > 0) {
+        calculoUAM += 1;
+        residuo = getTamanoUAM() - (tamano % getTamanoUAM());
+    } else {
+        residuo = 0;
+    }
+
+    if (lleno() || getMayorHueco()->getUam() < calculoUAM) {
+        cout << "sin espacio suficiente" << endl;
+        return;
+    }
+    menosJusto = getMayorHueco();
+
+    if (menosJusto == l->getPrimero()) {//si el menoss justo es el primero
+        l->insertarInicio("p", 0, calculoUAM, getContadorID(), tamano, residuo);
+        aumentarContadorID();
+        menosJusto->setTamano(menosJusto->getTamano() - tamano);
+        calculoUAM = menosJusto->getTamano() / getTamanoUAM();
+        if (menosJusto->getTamano() % getTamanoUAM() > 0) {
+            calculoUAM += 1;
+            residuo = getTamanoUAM() - (menosJusto->getTamano() % getTamanoUAM());
+        } else {
+            residuo = 0;
+        }
+        menosJusto->setUam(calculoUAM);
+        menosJusto->setResiduo(residuo);
+        if (menosJusto->getUam() == 0) {
+            menosJusto->setTipo("eliminar");
+            l->eliminar("eliminar");
+        }
+    } else {
+        p = l->getPrimero();
+        while (p->getEnlace() != menosJusto) {
+            p = p->getEnlace();
+        }
+
+        l->insertarMedio("p", 0, calculoUAM, getContadorID(), tamano, residuo, p);
+        aumentarContadorID();
+        menosJusto->setTamano(menosJusto->getTamano() - tamano);
+        calculoUAM = menosJusto->getTamano() / getTamanoUAM();
+        if (menosJusto->getTamano() % getTamanoUAM() > 0) {
+            calculoUAM += 1;
+            residuo = getTamanoUAM() - (menosJusto->getTamano() % getTamanoUAM());
+        } else {
+            residuo = 0;
+        }
+        menosJusto->setUam(calculoUAM);
+        menosJusto->setResiduo(residuo);
+        if (menosJusto->getUam() == 0) {
+            menosJusto->setTipo("eliminar");
+            l->eliminar("eliminar");
+        }
+
+    }
+    actualizarPosiciones();
+
+
+}
