@@ -33,7 +33,6 @@ void SuperLista::crearLista() {
 
     int tamano = 0;
     int calculoUAM, residuo;
-    Nodo *p;
     cout << "tamano del proceso" << endl;
     cin >> tamano;
     while (tamano != -1 && !lleno()) {
@@ -85,18 +84,15 @@ void SuperLista::buscar() {
 }
 
 void SuperLista::terminarProceso(int id) {
-    Nodo *p = l->getPrimero();
-    int acumulado = 0;
+
     if (l->buscarPorID(id)) {
-        l->buscarPorID(id)->setTipo("h");//cambio el tipo a h
+        l->buscarPorID(id)->setTipo("h");
+        l->buscarPorID(id)->setTamano(l->buscarPorID(id)->getUam()*getTamanoUAM());
+        l->buscarPorID(id)->setResiduo(0);//cambio el tipo a h
         l->buscarPorID(id)->setId(-1);
         terminarProceso();
+        actualizarPosiciones();
 
-        while (p != nullptr) {
-            p->setPosicion(acumulado);
-            acumulado += p->getUam();
-            p = p->getEnlace();
-        }
     } else {
         cout << "el proceso " << id << " no existe" << endl;
     }
@@ -152,7 +148,7 @@ int SuperLista::getTamanoMemoriaUAM() {
 }
 
 Nodo *SuperLista::getMayorHueco() {
-    Nodo *p = l->getPrimero(), *mayorTemporal;
+    Nodo *p = l->getPrimero(), *mayorTemporal = nullptr;
     while (p != nullptr) {
         if (p->getTipo() == "h") {
             mayorTemporal = p;
@@ -162,7 +158,7 @@ Nodo *SuperLista::getMayorHueco() {
     }
     p = l->getPrimero();
     while (p != nullptr) {
-        if (p->getUam() > mayorTemporal->getUam()) {
+        if (p->getUam() > mayorTemporal->getUam() && p->getTipo() == "h") {
             mayorTemporal = p;
         }
         p = p->getEnlace();
