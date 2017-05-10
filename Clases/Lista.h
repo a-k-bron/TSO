@@ -10,14 +10,14 @@
 
 class Lista {
 protected:
-    Nodo *primero;
+    Nodo *primero; // almacena direccion
 public:
-    Nodo *getPrimero() const;
+    Nodo *getPrimero() const; // devuelve informacion
 
 public:
 
 
-    Lista();
+    Lista(); // primer punto apunto a nulo ya que no hay nada en la lista
     Nodo *ultimo();
 
     void recorreLista();
