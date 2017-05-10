@@ -75,14 +75,6 @@ void SuperLista::setContadorID(int contadorID) {
     SuperLista::contadorID = contadorID;
 }
 
-void SuperLista::buscar() {
-    int aux;
-    cout << "numero con que buscar: ";
-    cin >> aux;
-    l->buscarPorID(aux)->toString();
-
-}
-
 void SuperLista::terminarProceso(int id) {
 
     if (l->buscarPorID(id)) {
