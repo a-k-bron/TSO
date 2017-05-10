@@ -11,7 +11,7 @@
 class SuperLista {
 private:
     int tamanoMemoria, tamanoUAM, contadorID;
-    Nodo* testigoUltimo= nullptr;
+    Nodo *testigoUltimo = nullptr;
 public:
     int getContadorID() const;//
 
@@ -33,7 +33,7 @@ public:
 
     void crearLista();
 
-    Nodo * getMayorHueco();
+    Nodo *getMayorHueco();
 
     void terminarProceso(int id);
 
@@ -41,9 +41,9 @@ public:
 
     void mejorAjuste(int tamano);
 
-    void siguienteAjuste(int  tamano);
+    void siguienteAjuste(int tamano);
 
-    void PrimerAjuste (int tamano);
+    void PrimerAjuste(int tamano);
 
     void peorAjuste(int tamano);
 

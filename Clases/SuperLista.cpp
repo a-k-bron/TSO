@@ -25,7 +25,7 @@ void SuperLista::crearLista() {
 
     int tamano = 0;
     int calculoUAM, residuo;
-    cout << "tamano del proceso" << endl;
+    cout << "tamano del proceso: " << endl;
     cin >> tamano;
     while (tamano != -1 && !lleno()) {
 
@@ -156,7 +156,7 @@ void SuperLista::mejorAjuste(int tamano) {
         residuo = 0;
     }
 
-    if (lleno() || getMayorHueco()->getUam() < calculoUAM) {
+    if (getMayorHueco() == nullptr || lleno() || getMayorHueco()->getUam() < calculoUAM) {
         cout << "sin espacio suficiente" << endl;
         return;
     }
@@ -226,7 +226,7 @@ void SuperLista::siguienteAjuste(int tamano) {
         residuo = 0;
     }
 
-    if (getMayorHueco()->getUam() < calculoUAM) {
+    if (getMayorHueco() == nullptr || getMayorHueco()->getUam() < calculoUAM) {
         cout << "sin espacio suficiente" << endl;
         return;
     }
@@ -297,7 +297,7 @@ void SuperLista::PrimerAjuste(int tamano) {
         residuo = 0;
     }
 
-    if (getMayorHueco()->getUam() < calculoUAM) {
+    if (getMayorHueco() == nullptr || getMayorHueco()->getUam() < calculoUAM) {
         cout << "sin espacio suficiente" << endl;
         return;
     }
@@ -351,7 +351,7 @@ void SuperLista::peorAjuste(int tamano) {
         residuo = 0;
     }
 
-    if (lleno() || getMayorHueco()->getUam() < calculoUAM) {
+    if (getMayorHueco() == nullptr || lleno() || getMayorHueco()->getUam() < calculoUAM) {
         cout << "sin espacio suficiente" << endl;
         return;
     }
