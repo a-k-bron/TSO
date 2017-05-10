@@ -4,22 +4,14 @@
 
 #include <iostream>
 #include "SuperLista.h"
-#include "Lista.h"
+
 
 int SuperLista::getTamanoMemoria() const {
     return tamanoMemoria;
 }
 
-void SuperLista::setTamanoMemoria(int tamanoMemoria) {
-    SuperLista::tamanoMemoria = tamanoMemoria;
-}
-
 int SuperLista::getTamanoUAM() const {
     return tamanoUAM;
-}
-
-void SuperLista::setTamanoUAM(int tamanoUAM) {
-    SuperLista::tamanoUAM = tamanoUAM;
 }
 
 SuperLista::SuperLista(int tamanoMemoria, int tamanoUAM) : tamanoMemoria(tamanoMemoria), tamanoUAM(tamanoUAM) {
@@ -71,15 +63,11 @@ int SuperLista::getContadorID() const {
     return contadorID;
 }
 
-void SuperLista::setContadorID(int contadorID) {
-    SuperLista::contadorID = contadorID;
-}
-
 void SuperLista::terminarProceso(int id) {
 
     if (l->buscarPorID(id)) {
         l->buscarPorID(id)->setTipo("h");
-        l->buscarPorID(id)->setTamano(l->buscarPorID(id)->getUam()*getTamanoUAM());
+        l->buscarPorID(id)->setTamano(l->buscarPorID(id)->getUam() * getTamanoUAM());
         l->buscarPorID(id)->setResiduo(0);//cambio el tipo a h
         l->buscarPorID(id)->setId(-1);
         terminarProceso();
@@ -97,10 +85,10 @@ void SuperLista::terminarProceso() {
     Nodo *p = l->getPrimero();//proceso de verificacion de huecos juntos
     while (p != nullptr && p->getEnlace() != nullptr) {
         if (p->getTipo() == "h" && p->getEnlace()->getTipo() == "h") {
-            p->setTamano(p->getTamano() + p->getEnlace()->getTamano()+p->getResiduo()+p->getEnlace()->getResiduo());
+            p->setTamano(p->getTamano() + p->getEnlace()->getTamano());
             p->setResiduo(0);
-            calculoUAM=p->getTamano()/getTamanoUAM();
-            if(p->getTamano()%getTamanoUAM()>0){
+            calculoUAM = p->getTamano() / getTamanoUAM();
+            if (p->getTamano() % getTamanoUAM() > 0) {
                 calculoUAM++;
             }
             p->setUam(calculoUAM);
@@ -128,8 +116,7 @@ bool SuperLista::lleno() {
         }
         p = p->getEnlace();
     }
-    if (getTamanoMemoriaUAM() <= contador) { return true; }
-    else { return false; }
+    return getTamanoMemoriaUAM() <= contador;
 
 }
 
@@ -146,6 +133,7 @@ Nodo *SuperLista::getMayorHueco() {
         }
         p = p->getEnlace();
     }
+    if (mayorTemporal == nullptr) { return nullptr; }
     p = l->getPrimero();
     while (p != nullptr) {
         if (p->getUam() > mayorTemporal->getUam() && p->getTipo() == "h") {
@@ -158,7 +146,7 @@ Nodo *SuperLista::getMayorHueco() {
 }
 
 void SuperLista::mejorAjuste(int tamano) {
-    Nodo *p = l->getPrimero(), *masJusto;       // obtener el primer nodo de la lista
+    Nodo *p = l->getPrimero(), *masJusto = nullptr;       // obtener el primer nodo de la lista
     int calculoUAM, residuo;                    //
     calculoUAM = tamano / getTamanoUAM();
     if (tamano % getTamanoUAM() > 0) {
@@ -190,20 +178,7 @@ void SuperLista::mejorAjuste(int tamano) {
     if (masJusto == l->getPrimero()) {//si el mas justo es el primero
         l->insertarInicio("p", 0, calculoUAM, getContadorID(), tamano, residuo);
         aumentarContadorID();
-        masJusto->setTamano(masJusto->getTamano() - tamano);
-        calculoUAM = masJusto->getTamano() / getTamanoUAM();
-        if (masJusto->getTamano() % getTamanoUAM() > 0) {
-            calculoUAM += 1;
-            residuo = getTamanoUAM() - (masJusto->getTamano() % getTamanoUAM());
-        } else {
-            residuo = 0;
-        }
-        masJusto->setUam(calculoUAM);
-        masJusto->setResiduo(residuo);
-        if (masJusto->getUam() == 0) {
-            masJusto->setTipo("eliminar");
-            l->eliminar("eliminar");
-        }
+
     } else {
         p = l->getPrimero();
         while (p->getEnlace() != masJusto) {
@@ -212,25 +187,17 @@ void SuperLista::mejorAjuste(int tamano) {
 
         l->insertarMedio("p", 0, calculoUAM, getContadorID(), tamano, residuo, p);
         aumentarContadorID();
-        masJusto->setTamano(masJusto->getTamano() - tamano);
-        calculoUAM = masJusto->getTamano() / getTamanoUAM();
-        if (masJusto->getTamano() % getTamanoUAM() > 0) {
-            calculoUAM += 1;
-            residuo = getTamanoUAM() - (masJusto->getTamano() % getTamanoUAM());
-        } else {
-            residuo = 0;
-        }
-        masJusto->setUam(calculoUAM);
-        masJusto->setResiduo(residuo);
-        if (masJusto->getUam() == 0) {
-            masJusto->setTipo("eliminar");
-            l->eliminar("eliminar");
-        }
+
 
     }
-    //l->insertarMedio("p", 0, calculoUAM, getContadorID(), tamano, residuo); }
+    masJusto->setUam(masJusto->getUam() - calculoUAM);
+    masJusto->setTamano(masJusto->getUam() * tamanoUAM);
+    masJusto->setResiduo(0);
+    if (masJusto->getUam() == 0) {
+        masJusto->setTipo("eliminar");
+        l->eliminar("eliminar");
+    }
     actualizarPosiciones();
-
 
 }
 
@@ -305,17 +272,10 @@ void SuperLista::siguienteAjuste(int tamano) {
         aumentarContadorID();
         testigoUltimo = aux->getEnlace();
     }
-    p->setTamano(p->getTamano() - tamano);
-    calculoUAM = p->getTamano() / getTamanoUAM();
-    if (p->getTamano() % getTamanoUAM() > 0) {
-        calculoUAM += 1;
-        residuo = getTamanoUAM() - (p->getTamano() % getTamanoUAM());
-    } else {
-        residuo = 0;
-    }
 
-    p->setUam(calculoUAM);
-    p->setResiduo(residuo);
+    p->setUam(p->getUam() - calculoUAM);
+    p->setTamano(p->getUam() * tamanoUAM);
+    p->setResiduo(0);
 
     if (p->getUam() == 0) {
         p->setTipo("eliminar");
@@ -365,17 +325,11 @@ void SuperLista::PrimerAjuste(int tamano) {
         l->insertarMedio("p", 0, calculoUAM, getContadorID(), tamano, residuo, aux);
         aumentarContadorID();
     }
-    p->setTamano(p->getTamano() - tamano);
-    calculoUAM = p->getTamano() / getTamanoUAM();
-    if (p->getTamano() % getTamanoUAM() > 0) {
-        calculoUAM += 1;
-        residuo = getTamanoUAM() - (p->getTamano() % getTamanoUAM());
-    } else {
-        residuo = 0;
-    }
 
-    p->setUam(calculoUAM);
-    p->setResiduo(residuo);
+
+    p->setUam(p->getUam() - calculoUAM);
+    p->setTamano(p->getUam() * tamanoUAM);
+    p->setResiduo(0);
 
     if (p->getUam() == 0) {
         p->setTipo("eliminar");
@@ -387,7 +341,7 @@ void SuperLista::PrimerAjuste(int tamano) {
 
 void SuperLista::peorAjuste(int tamano) {
 
-    Nodo *p = l->getPrimero(), *menosJusto;       // obtener el primer nodo de la lista
+    Nodo *p, *menosJusto;       // obtener el primer nodo de la lista
     int calculoUAM, residuo;                    //
     calculoUAM = tamano / getTamanoUAM();
     if (tamano % getTamanoUAM() > 0) {
@@ -406,20 +360,7 @@ void SuperLista::peorAjuste(int tamano) {
     if (menosJusto == l->getPrimero()) {//si el menoss justo es el primero
         l->insertarInicio("p", 0, calculoUAM, getContadorID(), tamano, residuo);
         aumentarContadorID();
-        menosJusto->setTamano(menosJusto->getTamano() - tamano);
-        calculoUAM = menosJusto->getTamano() / getTamanoUAM();
-        if (menosJusto->getTamano() % getTamanoUAM() > 0) {
-            calculoUAM += 1;
-            residuo = getTamanoUAM() - (menosJusto->getTamano() % getTamanoUAM());
-        } else {
-            residuo = 0;
-        }
-        menosJusto->setUam(calculoUAM);
-        menosJusto->setResiduo(residuo);
-        if (menosJusto->getUam() == 0) {
-            menosJusto->setTipo("eliminar");
-            l->eliminar("eliminar");
-        }
+
     } else {
         p = l->getPrimero();
         while (p->getEnlace() != menosJusto) {
@@ -428,23 +369,13 @@ void SuperLista::peorAjuste(int tamano) {
 
         l->insertarMedio("p", 0, calculoUAM, getContadorID(), tamano, residuo, p);
         aumentarContadorID();
-        menosJusto->setTamano(menosJusto->getTamano() - tamano);
-        calculoUAM = menosJusto->getTamano() / getTamanoUAM();
-        if (menosJusto->getTamano() % getTamanoUAM() > 0) {
-            calculoUAM += 1;
-            residuo = getTamanoUAM() - (menosJusto->getTamano() % getTamanoUAM());
-        } else {
-            residuo = 0;
-        }
-        menosJusto->setUam(calculoUAM);
-        menosJusto->setResiduo(residuo);
-        if (menosJusto->getUam() == 0) {
-            menosJusto->setTipo("eliminar");
-            l->eliminar("eliminar");
-        }
-
+    }
+    menosJusto->setUam(menosJusto->getUam() - calculoUAM);
+    menosJusto->setTamano(menosJusto->getUam() * tamanoUAM);
+    menosJusto->setResiduo(0);
+    if (menosJusto->getUam() == 0) {
+        menosJusto->setTipo("eliminar");
+        l->eliminar("eliminar");
     }
     actualizarPosiciones();
-
-
 }

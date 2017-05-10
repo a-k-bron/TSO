@@ -15,7 +15,7 @@ private:
 public:
     int getContadorID() const;//
 
-    void setContadorID(int contadorID);//
+    //
 
     void aumentarContadorID();
 
@@ -29,11 +29,7 @@ public:
 
     int getTamanoMemoria() const;
 
-    void setTamanoMemoria(int tamanoMemoria);
-
     int getTamanoUAM() const;
-
-    void setTamanoUAM(int tamanoUAM);
 
     void crearLista();
 
