@@ -97,13 +97,11 @@ void SuperLista::terminarProceso() {
     Nodo *p = l->getPrimero();//proceso de verificacion de huecos juntos
     while (p != nullptr && p->getEnlace() != nullptr) {
         if (p->getTipo() == "h" && p->getEnlace()->getTipo() == "h") {
-            p->setTamano(p->getTamano() + p->getEnlace()->getTamano());
-            calculoUAM = p->getTamano() / getTamanoUAM();
-            if (p->getTamano() % getTamanoUAM() > 0) {
-                calculoUAM += 1;
-                p->setResiduo(getTamanoUAM() - (p->getTamano() % getTamanoUAM()));
-            } else {
-                p->setResiduo(0);
+            p->setTamano(p->getTamano() + p->getEnlace()->getTamano()+p->getResiduo()+p->getEnlace()->getResiduo());
+            p->setResiduo(0);
+            calculoUAM=p->getTamano()/getTamanoUAM();
+            if(p->getTamano()%getTamanoUAM()>0){
+                calculoUAM++;
             }
             p->setUam(calculoUAM);
             p->getEnlace()->setTipo("eliminar");

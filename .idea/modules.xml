@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/TSO.iml" filepath="$PROJECT_DIR$/.idea/TSO.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Administracion de memoria.iml" filepath="$PROJECT_DIR$/.idea/Administracion de memoria.iml" />
+      <module fileurl="file://C:\Users\Everardo Ramirez\ClionProjects\Administracion de memoria\.idea\TSO.iml" filepath="C:\Users\Everardo Ramirez\ClionProjects\Administracion de memoria\.idea\TSO.iml" />
     </modules>
   </component>
 </project>
