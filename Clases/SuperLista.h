@@ -13,9 +13,9 @@ private:
     int tamanoMemoria, tamanoUAM, contadorID;
     Nodo* testigoUltimo= nullptr;
 public:
-    int getContadorID() const;
+    int getContadorID() const;//
 
-    void setContadorID(int contadorID);
+    void setContadorID(int contadorID);//
 
     void aumentarContadorID();
 
@@ -38,8 +38,6 @@ public:
     void crearLista();
 
     Nodo * getMayorHueco();
-
-    void buscar();
 
     void terminarProceso(int id);
 
