@@ -15,9 +15,9 @@ int SuperLista::getTamanoUAM() const {
 }
 
 SuperLista::SuperLista(int tamanoMemoria, int tamanoUAM) : tamanoMemoria(tamanoMemoria), tamanoUAM(tamanoUAM) {
-    l = new Lista();
+    l = new Lista();//l es la nueva lista
     l->insertarUltimo("h", 0, getTamanoMemoria() / getTamanoUAM(), -1, getTamanoMemoria(),
-                      getTamanoMemoria() % getTamanoUAM());
+                      getTamanoMemoria() % getTamanoUAM());// crea un hueco del tamaño de la memoria
     contadorID = 0;
 }
 
@@ -27,16 +27,16 @@ void SuperLista::crearLista() {
     int calculoUAM, residuo;
     cout << "tamano del proceso: " << endl;
     cin >> tamano;
-    while (tamano != -1 && !lleno()) {
+    while (tamano != -1 && !lleno()) {// inserta procesos hasta que el usuario ingrese -1 o este lleno
 
-        calculoUAM = tamano / getTamanoUAM();
-        if (tamano % getTamanoUAM() > 0) {
-            calculoUAM += 1;
-            residuo = getTamanoUAM() - (tamano % getTamanoUAM());
+        calculoUAM = tamano / getTamanoUAM();//se calcula la cantidad de uams dividiendo tamaño entre uam dada por el usuario
+        if (tamano % getTamanoUAM() > 0) {// verifica si existe residuo
+            calculoUAM += 1;// si existe toma una uam extra
+            residuo = getTamanoUAM() - (tamano % getTamanoUAM());// asigna el residuo
         } else {
-            residuo = 0;
+            residuo = 0;// si no hay residuo pone el residuo a 0 del proceso
         }
-        if (getMayorHueco()->getUam() >= calculoUAM) {
+        if (getMayorHueco()->getUam() >= calculoUAM) {//calcula que el tamaño de uams del proceso sea menor al del mayor hueco, es decir, que quepa.
             Nodo *p;
             int acumulado = 0;
             l->insertarInicio("p", 0, calculoUAM, contadorID, tamano, residuo);//tipo,posicion,uam,id,tamaño,residuo
@@ -46,35 +46,35 @@ void SuperLista::crearLista() {
                 acumulado += p->getUam();
                 p = p->getEnlace();
             }
-            l->ultimo()->setUam(l->ultimo()->getUam() - calculoUAM);
-            l->ultimo()->setTamano(l->ultimo()->getTamano() - (calculoUAM * getTamanoUAM()));
+            l->ultimo()->setUam(l->ultimo()->getUam() - calculoUAM);//actualiza las uam del hueco
+            l->ultimo()->setTamano(l->ultimo()->getTamano() - (calculoUAM * getTamanoUAM()));//actualiza el tamaño del hueco
             contadorID++;
         } else { cout << "falta espacio" << endl; }
         cin >> tamano;
     }
 
-    if (l->ultimo()->getUam() == 0) {
+    if (l->ultimo()->getUam() == 0) {// si el hueco se hace 0, elimina ese nodo
         l->ultimo()->setTipo("eliminar");
         l->eliminar("eliminar");
     }
 }
 
-int SuperLista::getContadorID() const {
+int SuperLista::getContadorID() const {// retorna el id del proceso
     return contadorID;
 }
 
 void SuperLista::terminarProceso(int id) {
 
-    if (l->buscarPorID(id)) {
-        l->buscarPorID(id)->setTipo("h");
-        l->buscarPorID(id)->setTamano(l->buscarPorID(id)->getUam() * getTamanoUAM());
-        l->buscarPorID(id)->setResiduo(0);//cambio el tipo a h
-        l->buscarPorID(id)->setId(-1);
+    if (l->buscarPorID(id)) {// verifica que el id del proceso existe
+        l->buscarPorID(id)->setTipo("h");// le da tipo h al proceso
+        l->buscarPorID(id)->setTamano(l->buscarPorID(id)->getUam() * getTamanoUAM());//obtiene tamaño y uam
+        l->buscarPorID(id)->setResiduo(0);//pone el residuo a 0
+        l->buscarPorID(id)->setId(-1);// cambia el id a -1
         terminarProceso();
         actualizarPosiciones();
 
     } else {
-        cout << "el proceso " << id << " no existe" << endl;
+        cout << "el proceso " << id << " no existe" << endl;// si no lo encuentra
     }
 
 
@@ -82,64 +82,64 @@ void SuperLista::terminarProceso(int id) {
 
 void SuperLista::terminarProceso() {
     int calculoUAM;
-    Nodo *p = l->getPrimero();//proceso de verificacion de huecos juntos
-    while (p != nullptr && p->getEnlace() != nullptr) {
-        if (p->getTipo() == "h" && p->getEnlace()->getTipo() == "h") {
-            p->setTamano(p->getTamano() + p->getEnlace()->getTamano());
-            p->setResiduo(0);
-            calculoUAM = p->getTamano() / getTamanoUAM();
-            if (p->getTamano() % getTamanoUAM() > 0) {
+    Nodo *p = l->getPrimero();//da a p el primer elemento de la lista
+    while (p != nullptr && p->getEnlace() != nullptr) {//verifica que este dentro de la lista
+        if (p->getTipo() == "h" && p->getEnlace()->getTipo() == "h") {// Si hay dos huecos seguidos
+            p->setTamano(p->getTamano() + p->getEnlace()->getTamano());//obtiene el tamaño de los dos huecos
+            p->setResiduo(0);// pone el residuo a 0
+            calculoUAM = p->getTamano() / getTamanoUAM();//calcula las uam
+            if (p->getTamano() % getTamanoUAM() > 0) {// da una uam extra si es que hay residuo
                 calculoUAM++;
             }
             p->setUam(calculoUAM);
-            p->getEnlace()->setTipo("eliminar");
+            p->getEnlace()->setTipo("eliminar");//como guardo todo en p, el siguiente enlace que es hueco se poner de tipo eliminar para eliminarlo
             l->eliminar("eliminar");
-            terminarProceso();
+            terminarProceso();// se llama a si mismo recursivamente para evitar que haya un 3er hueco junto
             //if (p == l->ultimo()) { break; }
         }
 
-        p = p->getEnlace();
+        p = p->getEnlace();// obtiene el siguiente enlace y se lod a a p, actualizacion para la recursividad
     }
 }
 
 void SuperLista::aumentarContadorID() {
-    contadorID++;
+    contadorID++;// aumenta el contador en 1 para cada proceso
 }
 
 bool SuperLista::lleno() {
     int contador = 0;
     Nodo *p = l->getPrimero();
 
-    while (p != nullptr) {
-        if (p->getTipo() == "p") {
-            contador += p->getUam();
+    while (p != nullptr) {// verifica que este dentro de la lista
+        if (p->getTipo() == "p") {// verifica que p sea de tipo proceso
+            contador += p->getUam();//obtiene y suma las uam de ese proceso
         }
-        p = p->getEnlace();
+        p = p->getEnlace();// obtiene siguiente nodo
     }
-    return getTamanoMemoriaUAM() <= contador;
+    return getTamanoMemoriaUAM() <= contador;// retorna como booleano
 
 }
 
-int SuperLista::getTamanoMemoriaUAM() {
+int SuperLista::getTamanoMemoriaUAM() {// obtiene el tamaño total de uams
     return getTamanoMemoria() / getTamanoUAM();
 }
 
 Nodo *SuperLista::getMayorHueco() {
     Nodo *p = l->getPrimero(), *mayorTemporal = nullptr;
     while (p != nullptr) {
-        if (p->getTipo() == "h") {
+        if (p->getTipo() == "h") {//obtiene el primer hueco y lo asigna a mayor temporal
             mayorTemporal = p;
             break;
         }
-        p = p->getEnlace();
+        p = p->getEnlace();//busca hasta obtener un nodo tipo h
     }
-    if (mayorTemporal == nullptr) { return nullptr; }
-    p = l->getPrimero();
+    if (mayorTemporal == nullptr) { return nullptr; }// si el mayor quedo como nulo significa que no hay hueco
+    p = l->getPrimero();//obtiene el primer nodo
     while (p != nullptr) {
-        if (p->getUam() > mayorTemporal->getUam() && p->getTipo() == "h") {
-            mayorTemporal = p;
+        if (p->getUam() > mayorTemporal->getUam() && p->getTipo() == "h") {//si las uams de p son mayores al mayor temporal y es de tipo hueco
+            mayorTemporal = p;//asigna a valor temporar ese nodo
         }
-        p = p->getEnlace();
+        p = p->getEnlace();//actualiza al siguiente nodo
     }
 
     return mayorTemporal;
