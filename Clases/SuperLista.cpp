@@ -146,43 +146,43 @@ Nodo *SuperLista::getMayorHueco() {
 }
 
 void SuperLista::mejorAjuste(int tamano) {
-    Nodo *p = l->getPrimero(), *masJusto = nullptr;       // obtener el primer nodo de la lista
-    int calculoUAM, residuo;                    //
-    calculoUAM = tamano / getTamanoUAM();
-    if (tamano % getTamanoUAM() > 0) {
+    Nodo *p = l->getPrimero(), *masJusto = nullptr;       // obtener el primer nodo de la lista //measjusto se pone a nulo
+    int calculoUAM, residuo;
+    calculoUAM = tamano / getTamanoUAM();//Calcula las uam necesarias para el proceso
+    if (tamano % getTamanoUAM() > 0) {//si hay residuo añade una uam mas al proceso
         calculoUAM += 1;
-        residuo = getTamanoUAM() - (tamano % getTamanoUAM());
+        residuo = getTamanoUAM() - (tamano % getTamanoUAM());//da el residuo
     } else {
-        residuo = 0;
+        residuo = 0;//si no el residuo es igual a 0
     }
 
-    if (getMayorHueco() == nullptr || lleno() || getMayorHueco()->getUam() < calculoUAM) {
+    if (getMayorHueco() == nullptr || lleno() || getMayorHueco()->getUam() < calculoUAM) {// revisa que la lista este llena, o el proceso sea mas grande que lo que resta
         cout << "sin espacio suficiente" << endl;
         return;
     }
 
-    while (p != nullptr) {//encontrar el primer hueco
+    while (p != nullptr) {//encontrar el primer hueco en donde cabe el proceso y lo guarda en p
         if (p->getTipo() == "h" && p->getUam() >= calculoUAM) {
             masJusto = p;
             break;
         }
         p = p->getEnlace();
     }
-    p = l->getPrimero();
+    p = l->getPrimero();// pone de nuevo el primero a p
     while (p != nullptr) {
-        if (p->getTipo() == "h" && p->getUam() >= calculoUAM && p->getUam() < masJusto->getUam()) {//ajustar
+        if (p->getTipo() == "h" && p->getUam() >= calculoUAM && p->getUam() < masJusto->getUam()) {//busca un hueco menor al hueco actual y ahora guarda esa posicion
             masJusto = p;
         }
         p = p->getEnlace();
     }
-    if (masJusto == l->getPrimero()) {//si el mas justo es el primero
+    if (masJusto == l->getPrimero()) {//si el mas justo es el primero, inserta al inicio
         l->insertarInicio("p", 0, calculoUAM, getContadorID(), tamano, residuo);
         aumentarContadorID();
 
     } else {
         p = l->getPrimero();
         while (p->getEnlace() != masJusto) {
-            p = p->getEnlace();
+            p = p->getEnlace();//obtiene el nodo del mas justo e inserta al medio
         }
 
         l->insertarMedio("p", 0, calculoUAM, getContadorID(), tamano, residuo, p);
@@ -190,10 +190,10 @@ void SuperLista::mejorAjuste(int tamano) {
 
 
     }
-    masJusto->setUam(masJusto->getUam() - calculoUAM);
+    masJusto->setUam(masJusto->getUam() - calculoUAM);//le resta al hueco las uams del proceso y quita el residuo del hueco
     masJusto->setTamano(masJusto->getUam() * tamanoUAM);
     masJusto->setResiduo(0);
-    if (masJusto->getUam() == 0) {
+    if (masJusto->getUam() == 0) {//si las uam del hueco quedaron el 0 se elimina
         masJusto->setTipo("eliminar");
         l->eliminar("eliminar");
     }
@@ -201,7 +201,7 @@ void SuperLista::mejorAjuste(int tamano) {
 
 }
 
-void SuperLista::actualizarPosiciones() {
+void SuperLista::actualizarPosiciones() {//actualiza las posiciones en base al inicio y fin de las uams
     Nodo *p;
     int acumulado = 0;
     p = l->getPrimero();
@@ -218,22 +218,22 @@ void SuperLista::siguienteAjuste(int tamano) {
     Nodo *p;
     Nodo *aux;
 
-    calculoUAM = tamano / getTamanoUAM();
-    if (tamano % getTamanoUAM() > 0) {
+    calculoUAM = tamano / getTamanoUAM();// calcula las uams del proceso nuevo
+    if (tamano % getTamanoUAM() > 0) {//verifica si hay residuo y si hay asigna una uam extra al proceso
         calculoUAM += 1;
-        residuo = getTamanoUAM() - (tamano % getTamanoUAM());
+        residuo = getTamanoUAM() - (tamano % getTamanoUAM());//saca el residuo y lo asigna
     } else {
         residuo = 0;
     }
 
-    if (getMayorHueco() == nullptr || getMayorHueco()->getUam() < calculoUAM) {
+    if (getMayorHueco() == nullptr || getMayorHueco()->getUam() < calculoUAM) {//verifica que la lista no este llena o que el proceso sea menor al mayor hueco
         cout << "sin espacio suficiente" << endl;
         return;
     }
 
-    if (testigoUltimo == nullptr) {
+    if (testigoUltimo == nullptr) {//si es el primero elemento a insertar
         p = l->getPrimero();
-        while (p != nullptr) {
+        while (p != nullptr) {//lo inserta en el primer hueco que encuentre que sea menor al proceso
             if (p->getTipo() == "h" && p->getUam() >= calculoUAM) {
                 break;
             } else {
@@ -243,13 +243,13 @@ void SuperLista::siguienteAjuste(int tamano) {
 
     } else {
         bool segundaVuelta = false;
-        p = testigoUltimo;
-        while (p != nullptr or !segundaVuelta) {
+        p = testigoUltimo;//si ya hubo un elemento anterior insertado
+        while (p != nullptr or !segundaVuelta) {//recorre la lista completa para completar una vuelta
             if (p == nullptr) {
                 p = l->getPrimero();
                 segundaVuelta = true;
             }
-            if (p->getTipo() == "h" && p->getUam() >= calculoUAM) {
+            if (p->getTipo() == "h" && p->getUam() >= calculoUAM) {//obtiene el hueco que sea menor al proceso
                 break;
             } else {
                 p = p->getEnlace();
@@ -259,11 +259,12 @@ void SuperLista::siguienteAjuste(int tamano) {
 
 
     }
-    if (p == l->getPrimero()) {
+    if (p == l->getPrimero()) {//si el hueco esta al inicio inserta al inicio
         l->insertarInicio("p", 0, calculoUAM, getContadorID(), tamano, residuo);
         aumentarContadorID();
+        testigoUltimo=l->getPrimero();
     } else {
-        aux = l->getPrimero();
+        aux = l->getPrimero();//si no inserta al medio
 
         while (aux->getEnlace() != p) {
             aux = aux->getEnlace();
@@ -273,11 +274,11 @@ void SuperLista::siguienteAjuste(int tamano) {
         testigoUltimo = aux->getEnlace();
     }
 
-    p->setUam(p->getUam() - calculoUAM);
+    p->setUam(p->getUam() - calculoUAM);// le resta al hueco las uams del proceso y quita el residuo del hueco
     p->setTamano(p->getUam() * tamanoUAM);
     p->setResiduo(0);
 
-    if (p->getUam() == 0) {
+    if (p->getUam() == 0) {//si el hueco quedo en 0 lo elimina
         p->setTipo("eliminar");
         l->eliminar("eliminar");
     }
@@ -289,22 +290,22 @@ void SuperLista::PrimerAjuste(int tamano) {
     Nodo *p;
     Nodo *aux;
 
-    calculoUAM = tamano / getTamanoUAM();
-    if (tamano % getTamanoUAM() > 0) {
+    calculoUAM = tamano / getTamanoUAM();//obtiene las uams que necesitara el proceso
+    if (tamano % getTamanoUAM() > 0) {//si hay residuo da una uam extra y asigna el residuo
         calculoUAM += 1;
         residuo = getTamanoUAM() - (tamano % getTamanoUAM());
-    } else {
+    } else {//si no pone el residuo a 0
         residuo = 0;
     }
 
-    if (getMayorHueco() == nullptr || getMayorHueco()->getUam() < calculoUAM) {
+    if (getMayorHueco() == nullptr || getMayorHueco()->getUam() < calculoUAM) {// verifica que haya espacio en la lista
         cout << "sin espacio suficiente" << endl;
         return;
     }
 
 
     p = l->getPrimero();
-    while (p != nullptr) {
+    while (p != nullptr) {// obtine el primer hueco en donde quepa el proceso a ingresar
         if (p->getTipo() == "h" && p->getUam() >= calculoUAM) {
             break;
         } else {
@@ -313,11 +314,11 @@ void SuperLista::PrimerAjuste(int tamano) {
     }
 
 
-    if (p == l->getPrimero()) {
+    if (p == l->getPrimero()) {// si el hueco esta al inicio, inserta al inicio
         l->insertarInicio("p", 0, calculoUAM, getContadorID(), tamano, residuo);
         aumentarContadorID();
     } else {
-        aux = l->getPrimero();
+        aux = l->getPrimero();// si no inserta al medio
 
         while (aux->getEnlace() != p) {
             aux = aux->getEnlace();
@@ -327,11 +328,11 @@ void SuperLista::PrimerAjuste(int tamano) {
     }
 
 
-    p->setUam(p->getUam() - calculoUAM);
+    p->setUam(p->getUam() - calculoUAM);// le resta al huevo las uams del proceso y quita el residuo del hueco
     p->setTamano(p->getUam() * tamanoUAM);
     p->setResiduo(0);
 
-    if (p->getUam() == 0) {
+    if (p->getUam() == 0) {//si el hueco quedo on 0 lo elimina
         p->setTipo("eliminar");
         l->eliminar("eliminar");
     }
