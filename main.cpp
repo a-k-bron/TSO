@@ -49,6 +49,7 @@ int main() {
                 do {
                     cout << "Introduce el tamano del proceso:" << endl;
                     cin >> tamano;
+                    if(tamano==-1){ break;}
                     sl->PrimerAjuste(tamano);
                 } while (tamano != -1);
                 break;
@@ -56,6 +57,7 @@ int main() {
                 do {
                     cout << "Introduce el tamaño del proceso:" << endl;
                     cin >> tamano;
+                    if(tamano==-1){ break;}
                     sl->siguienteAjuste(tamano);
                 } while (tamano != -1);
                 break;
@@ -63,6 +65,7 @@ int main() {
                 do {
                     cout << "Introduce el tamaño del proceso:" << endl;
                     cin >> tamano;
+                    if(tamano==-1){ break;}
                     sl->mejorAjuste(tamano);
                 } while (tamano != -1);
                 break;
@@ -70,6 +73,7 @@ int main() {
                 do {
                     cout << "Introduce el tamaño del proceso:" << endl;
                     cin >> tamano;
+                    if(tamano==-1){ break;}
                     sl->peorAjuste(tamano);
                 } while (tamano != -1);
                 break;
